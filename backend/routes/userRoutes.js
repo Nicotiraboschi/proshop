@@ -1,4 +1,4 @@
-import express from "express";
+import express from 'express';
 import {
   authUser,
   registerUser,
@@ -6,8 +6,8 @@ import {
   getUserProfile,
   updateUserProfile,
   getUsers,
-  getUserById,
   deleteUser,
+  getUserById,
   updateUser,
 } from '../controllers/userController.js';
 import { protect, admin } from '../middleware/authMiddleware.js';
@@ -21,7 +21,8 @@ router
   .route('/profile')
   .get(protect, getUserProfile)
   .put(protect, updateUserProfile);
-router.route('/:id')
+router
+  .route('/:id')
   .delete(protect, admin, deleteUser)
   .get(protect, admin, getUserById)
   .put(protect, admin, updateUser);

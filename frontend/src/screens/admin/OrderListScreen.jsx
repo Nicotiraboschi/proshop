@@ -1,14 +1,12 @@
-import { LinkContainer } from "react-router-bootstrap"
-import { Table, Button } from "react-bootstrap"
-import { FaTimes } from "react-icons/fa"
-import Message from "../../components/Message"
-import Loader from "../../components/Loader"
-import { useGetOrdersQuery } from "../../slices/ordersApiSlice"
+import { LinkContainer } from 'react-router-bootstrap';
+import { Table, Button } from 'react-bootstrap';
+import { FaTimes } from 'react-icons/fa';
+import Message from '../../components/Message';
+import Loader from '../../components/Loader';
+import { useGetOrdersQuery } from '../../slices/ordersApiSlice';
 
 const OrderListScreen = () => {
-  const { data: orders, isLoading, error } = useGetOrdersQuery()
-
-  console.log(orders)
+  const { data: orders, isLoading, error } = useGetOrdersQuery();
 
   return (
     <>
@@ -16,9 +14,9 @@ const OrderListScreen = () => {
       {isLoading ? (
         <Loader />
       ) : error ? (
-        <Message variant='danger'>{error}</Message>
-      ) : orders.length === 0 ? (
-        <Message variant='info'>No orders</Message>
+        <Message variant='danger'>
+          {error?.data?.message || error.error}
+        </Message>
       ) : (
         <Table striped bordered hover responsive className='table-sm'>
           <thead>
@@ -43,14 +41,14 @@ const OrderListScreen = () => {
                   {order.isPaid ? (
                     order.paidAt.substring(0, 10)
                   ) : (
-                    <FaTimes style={{ color: "red" }} />
+                    <FaTimes style={{ color: 'red' }} />
                   )}
                 </td>
                 <td>
                   {order.isDelivered ? (
                     order.deliveredAt.substring(0, 10)
                   ) : (
-                    <FaTimes style={{ color: "red" }} />
+                    <FaTimes style={{ color: 'red' }} />
                   )}
                 </td>
                 <td>
@@ -59,11 +57,6 @@ const OrderListScreen = () => {
                       Details
                     </Button>
                   </LinkContainer>
-                  {/* <LinkContainer to={`/admin/order/${order._id}/edit`}>
-                    <Button variant='light' className='btn-sm'>
-                      Edit
-                    </Button>
-                  </LinkContainer> */}
                 </td>
               </tr>
             ))}
@@ -71,7 +64,7 @@ const OrderListScreen = () => {
         </Table>
       )}
     </>
-  )
-}
+  );
+};
 
-export default OrderListScreen
+export default OrderListScreen;

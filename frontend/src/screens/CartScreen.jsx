@@ -20,19 +20,20 @@ const CartScreen = () => {
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart;
 
-
-  const addToCartHandler = async (product, qty) => {
+  // NOTE: no need for an async function here as we are not awaiting the
+  // resolution of a Promise
+  const addToCartHandler = (product, qty) => {
     dispatch(addToCart({ ...product, qty }));
   };
 
-  const removeFromCartHandler = async (item) => {
-    dispatch(removeFromCart(item));
+  const removeFromCartHandler = (id) => {
+    dispatch(removeFromCart(id));
   };
 
   const checkoutHandler = () => {
     navigate('/login?redirect=/shipping');
   };
-  
+
   return (
     <Row>
       <Col md={8}>
@@ -72,7 +73,7 @@ const CartScreen = () => {
                     <Button
                       type='button'
                       variant='light'
-                      onClick={() => removeFromCartHandler(item)}
+                      onClick={() => removeFromCartHandler(item._id)}
                     >
                       <FaTrash />
                     </Button>
@@ -88,7 +89,7 @@ const CartScreen = () => {
           <ListGroup variant='flush'>
             <ListGroup.Item>
               <h2>
-                Subtotal ({cartItems.reduce((acc, item) => acc + (item.qty), 0)})
+                Subtotal ({cartItems.reduce((acc, item) => acc + item.qty, 0)})
                 items
               </h2>
               $
@@ -101,7 +102,7 @@ const CartScreen = () => {
                 type='button'
                 className='btn-block'
                 disabled={cartItems.length === 0}
-                onClick={() => checkoutHandler() }
+                onClick={checkoutHandler}
               >
                 Proceed To Checkout
               </Button>
